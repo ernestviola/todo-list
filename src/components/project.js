@@ -1,20 +1,20 @@
 // make a factory function or a class constructor
 export default class Project {
   constructor(name) {
-    this.notes = [];
-    this.name = name;
+    this._notes = [];
+    this._name = name;
   }
 
   get name() {
-    return this.name;
+    return this._name;
   }
 
   set name(value) {
-    this.name = value;
+    this._name = value;
   }
 
-  add(note) {
-    this.notes.append(note);
+  add(obj) {
+    this._notes.push(obj);
   }
 
   remove(note) {
