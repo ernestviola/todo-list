@@ -1,8 +1,9 @@
 // make a factory function or a class constructor
 export default class Project {
   constructor(name) {
-    this._notes = [];
+    this._toDoItems = [];
     this._name = name;
+    this.uuid = crypto.randomUUID();
   }
 
   get name() {
@@ -14,14 +15,10 @@ export default class Project {
   }
 
   add(obj) {
-    this._notes.push(obj);
+    this._toDoItems.push(obj);
   }
 
-  remove(note) {
-    //find the array location of the note then delete it
+  get toDoItems() {
+    return this._toDoItems;
   }
-
-
-  // add
-  // delete
 }

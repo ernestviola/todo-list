@@ -1,6 +1,5 @@
-import Note from '../components/note';
+import ToDo from '../components/todo';
 import Project from '../components/project';
-import ProjectList from '../components/projectList';
 
 function testNoteCreationFlow() {
   const note = new Note('Untitled',
@@ -16,3 +15,16 @@ function testNoteCreationFlow() {
   projectList.add(project);
   return projectList;
 }
+
+function autoPopulateProjectList(projectList) {
+  for (let i = 0; i < 5; i++) {
+    const testProject = new Project(`Project ${i}`)
+    const testToDo = new ToDo(`ToDo ${i}`);
+    testProject.add(testToDo);
+    projectList.push(testProject);
+  }
+}
+
+export {
+  autoPopulateProjectList
+};
