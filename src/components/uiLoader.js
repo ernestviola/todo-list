@@ -1,26 +1,29 @@
 import Project from './project';
+import ToDo from './todo';
 
 function populateProjectListUI(projectList) {
 
   for (let i = 0; i < projectList.length; i++) {
     const project = projectList[i];
     if (!(project instanceof Project)) {
-      throw Error('Is not a project');
+      throw Error('Unable to populate project list becuase obj is not a project');
     }
     const projectContainer = document.createElement('div');
     const projectName = document.createElement('span');
     projectName.innerText = project.name;
     projectContainer.appendChild(projectName);
     projectContainer.addEventListener('click', () => {
-      console.log(`Clicked ${projectName}`);
+      populateToDoListUI(project);
     })
     projectListContainer.appendChild(projectContainer);
   }
 }
 
 function populateToDoListUI(project) {
-  toDoListContainer.replaceChildren();
-  console.log(project)
+  todoList.replaceChildren();
+  if (!(project instanceof Project)) {
+    throw Error('Unable to populate todo list because obj is not a project');
+  }
   for (let i = 0; i < project.toDoItems.length; i++) {
     const currentToDoItem = project.toDoItems[i];
     const toDoItemContainer = document.createElement('div');
@@ -31,12 +34,24 @@ function populateToDoListUI(project) {
 
     toDoItemContainer.className = 'to__do__item';
 
-    toDoListContainer.append(toDoItemContainer);
+    todoList.append(toDoItemContainer);
   }
+}
+
+function populateToDoItemUI(todoItem) {
+  if (!(todoItem instanceof ToDo)) {
+    throw Error('Unable to populate todo item because obj is not a todo');
+  }
+
 
 }
 
 function initLayout() {
+
+  // create the new note and the new project buttons
+  projectListContainer.className = 'project__list';
+  todoList.className = 'todo__list';
+  todoItem.className = 'todo__item';
   root.appendChild(projectListContainer);
   root.appendChild(todoList);
   root.appendChild(todoItem);
@@ -44,11 +59,11 @@ function initLayout() {
 
 const root = document.querySelector('#root');
 const projectListContainer = document.createElement('div');
-projectListContainer.className = 'project__list';
 const todoList = document.createElement('div');
-todoList.className = 'todo__list';
 const todoItem = document.createElement('div');
-todoItem.className = 'todo__item';
 
 
-export { initLayout, populateProjectListUI };
+
+
+
+export { initLayout, populateProjectListUI, populateToDoListUI };
