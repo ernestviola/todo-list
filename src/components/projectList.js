@@ -3,6 +3,10 @@ export default class ProjectList {
     this._projects = [];
   }
 
+  get projects() {
+    return this._projects;
+  }
+
   add(obj) {
     this._projects.push(obj);
   }
