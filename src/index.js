@@ -18,23 +18,11 @@ import Note from './components/note';
 import Project from './components/project';
 import ProjectList from './components/projectList';
 
-console.log('Hello World');
 
-function testNoteCreationFlow() {
-  const note = new Note('Untitled',
-    'here is the inner text',
-    'should we only take a new date?',
-    'High Priority. Maybe we should only take a list of priorities?'
-  );
+const newProjectList = new ProjectList();
 
-  const project = new Project('default');
-  const projectList = new ProjectList();
+const root = document.querySelector('#root');
+const projectListContainer = document.createElement('div');
+projectListContainer.className = 'projects__container';
 
-  project.add(note);
-  projectList.add(project);
-  return projectList;
-}
-
-const newProjectList = testNoteCreationFlow();
-
-console.log(newProjectList)
+root.appendChild(projectListContainer);
