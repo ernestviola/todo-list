@@ -14,6 +14,7 @@ function populateProjectListUI(projectList) {
     projectName.innerText = project.name;
     projectContainer.appendChild(projectName);
     projectContainer.addEventListener('click', () => {
+      activeProject = project;
       populateToDoListUI(project);
     })
     projectListContainer.appendChild(projectContainer);
@@ -25,8 +26,8 @@ function populateToDoListUI(project) {
   if (!(project instanceof Project)) {
     throw Error('Unable to populate todo list because obj is not a project');
   }
-  for (let i = 0; i < project.toDoItems.length; i++) {
-    const toDoItem = project.toDoItems[i];
+  for (let i = 0; i < project.tasks.length; i++) {
+    const toDoItem = project.tasks[i];
     const toDoItemContainer = document.createElement('div');
     const toDoItemName = document.createElement('span');
 
@@ -71,8 +72,9 @@ function createProjectAndAddToList() {
   populateProjectListUI(projectList);
 }
 
-function newTodo() {
-
+function createTaskAndAddToProject() {
+  activeProject.createTask();
+  populateToDoListUI(activeProject);
 }
 
 function initProjectListSection() {
@@ -105,6 +107,10 @@ function initTodoListSection() {
   const todoListHeader = document.createElement('div');
   const todoListTitle = document.createElement('span');
   const newTodoItemButton = document.createElement('button');
+  newTodoItemButton.addEventListener('click', (e) => {
+    e.preventDefault();
+    createTaskAndAddToProject();
+  })
   const todoList = document.createElement('div');
   todoList.className = 'todo__list';
   todoListTitle.innerText = 'Tasks'
@@ -123,6 +129,7 @@ const root = document.querySelector('#root');
 const projectListContainer = initProjectListSection();
 const todoList = initTodoListSection();
 const todoItem = document.createElement('div');
+let activeProject = projectList[0];
 root.appendChild(todoItem);
 
 

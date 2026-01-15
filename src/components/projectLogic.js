@@ -11,7 +11,7 @@ const projectListInit = () => {
   const projectList = []
   const defaultProject = new Project('default');
   const openingToDo = new Task('Untitled');
-  defaultProject.toDoItems.push(openingToDo);
+  defaultProject.tasks.push(openingToDo);
   projectList.push(defaultProject);
   return projectList;
 }
@@ -19,6 +19,8 @@ const projectListInit = () => {
 const createProject = () => {
   const newProject = new Project('untitled');
   projectList.push(newProject);
+
+  return newProject;
 }
 
 const deleteProject = () => {
