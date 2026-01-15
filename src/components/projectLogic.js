@@ -16,15 +16,20 @@ const projectListInit = () => {
   return projectList;
 }
 
+const createProject = () => {
+  const newProject = new Project('untitled');
+  projectList.push(newProject);
+}
+
 const deleteProject = () => {
 
 }
 
 
-let projectList = projectListInit()
+let projectList = projectListInit();
 
 
 
 
 
-export { projectList };
+export { projectList, createProject };

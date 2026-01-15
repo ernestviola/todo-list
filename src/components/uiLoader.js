@@ -1,8 +1,9 @@
+import { projectList, createProject } from './projectLogic';
 import Project from './Project';
 import Task from './Task';
 
 function populateProjectListUI(projectList) {
-
+  projectListContainer.replaceChildren();
   for (let i = 0; i < projectList.length; i++) {
     const project = projectList[i];
     if (!(project instanceof Project)) {
@@ -65,11 +66,12 @@ function populateToDoItemUI(todo) {
 
 }
 
-function openNewProjectDialog() {
-
+function createProjectAndAddToList() {
+  createProject();
+  populateProjectListUI(projectList);
 }
 
-function createNewTodo() {
+function newTodo() {
 
 }
 
@@ -78,6 +80,10 @@ function initProjectListSection() {
   const projectListHeader = document.createElement('div');
   const projectListHeaderTitle = document.createElement('span');
   const newProjectButton = document.createElement('button');
+  newProjectButton.addEventListener('click', (e) => {
+    e.preventDefault();
+    createProjectAndAddToList();
+  })
   const projectListContainer = document.createElement('div');
 
   projectListHeaderTitle.innerText = 'Projects';
