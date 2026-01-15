@@ -1,4 +1,5 @@
 import Task from './Task';
+import { saveProjectList } from '../projectLogic';
 
 // make a factory function or a class constructor
 export default class Project {
@@ -16,5 +17,10 @@ export default class Project {
     const task = new Task(title, description, dueDate, priority);
     this.tasks.push(task);
     return task;
+  }
+
+  updateProject(name) {
+    this.name = name;
+    saveProjectList();
   }
 }

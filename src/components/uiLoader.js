@@ -1,20 +1,50 @@
 import { projectList, createProject } from './projectLogic';
-import Project from './objects/Project';
-import Task from './objects/Task';
+
+
+function populateProject(project) {
+  const projectContainer = document.createElement('div');
+  const projectName = document.createElement('span');
+  projectName.innerText = project.name;
+  projectContainer.appendChild(projectName);
+  projectContainer.addEventListener('click', () => {
+    activeProject = project;
+    populateToDoListUI(project);
+  })
+
+  projectName.addEventListener('click', (e) => {
+    e.preventDefault();
+    projectName.contentEditable = true;
+  })
+
+  projectName.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault()
+      if (projectName.innerText == '') {
+        projectName.innerText = 'untitled';
+      }
+      project.updateProject(projectName.innerText);
+      projectName.contentEditable = false;
+    }
+  })
+
+  projectContainer.addEventListener('focusout', (e) => {
+    e.preventDefault()
+    if (projectName.innerText == '') {
+      projectName.innerText = 'untitled';
+    }
+    project.updateProject(projectName.innerText);
+    projectName.contentEditable = false;
+  })
+
+  return projectContainer;
+}
 
 function populateProjectListUI(projectList) {
   projectListContainer.replaceChildren();
   for (let i = 0; i < projectList.length; i++) {
-    const project = projectList[i];
-    const projectContainer = document.createElement('div');
-    const projectName = document.createElement('span');
-    projectName.innerText = project.name;
-    projectContainer.appendChild(projectName);
-    projectContainer.addEventListener('click', () => {
-      activeProject = project;
-      populateToDoListUI(project);
-    })
-    projectListContainer.appendChild(projectContainer);
+    projectListContainer.appendChild(
+      populateProject(projectList[i])
+    );
   }
 }
 
@@ -74,11 +104,11 @@ function initProjectListSection() {
     createProjectAndAddToList();
   })
   const projectListContainer = document.createElement('div');
-
+  projectListSection.className = 'project__list__section'
   projectListHeaderTitle.innerText = 'Projects';
   newProjectButton.innerText = 'New +';
   projectListContainer.className = 'project__list';
-  projectListSection.className = 'project__list__section'
+
 
   projectListHeader.appendChild(projectListHeaderTitle);
   projectListHeader.appendChild(newProjectButton);

@@ -26,7 +26,7 @@ const projectListInit = () => {
   }
   let savedProjects = storage.load('projects');
   let projectList;
-  if (!projectList) {
+  if (savedProjects) {
     projectList = rebuildProjectList(savedProjects);
     return projectList;
   } else {
@@ -44,11 +44,15 @@ const createProject = () => {
   const newProject = new Project('untitled');
   projectList.push(newProject);
 
-  storage.save('projects', projectList);
+  saveProjectList();
   return newProject;
+}
+
+function saveProjectList() {
+  storage.save('projects', projectList);
 }
 
 
 let projectList = projectListInit();
 
-export { projectList, createProject };
+export { projectList, saveProjectList, createProject };
