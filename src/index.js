@@ -18,5 +18,4 @@ import { projectList } from './components/projectLogic';
 import { populateProjectListUI, populateToDoListUI } from './components/uiLoader';
 
 populateProjectListUI(projectList);
-
 populateToDoListUI(projectList[0]);

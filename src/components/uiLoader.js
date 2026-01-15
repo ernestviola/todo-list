@@ -4,6 +4,7 @@ import { projectList, createProject } from './projectLogic';
 function populateProject(project) {
   const projectContainer = document.createElement('div');
   const projectName = document.createElement('span');
+  projectContainer.className = 'project'
   projectName.innerText = project.name;
   projectContainer.appendChild(projectName);
   projectContainer.addEventListener('click', () => {
@@ -11,9 +12,11 @@ function populateProject(project) {
     populateToDoListUI(project);
   })
 
-  projectName.addEventListener('click', (e) => {
+  projectContainer.addEventListener('dblclick', (e) => {
     e.preventDefault();
     projectName.contentEditable = true;
+    projectName.focus();
+    projectName.selectN
   })
 
   projectName.addEventListener('keydown', (e) => {
@@ -27,7 +30,7 @@ function populateProject(project) {
     }
   })
 
-  projectContainer.addEventListener('focusout', (e) => {
+  projectName.addEventListener('focusout', (e) => {
     e.preventDefault()
     if (projectName.innerText == '') {
       projectName.innerText = 'untitled';
@@ -58,7 +61,6 @@ function populateToDoListUI(project) {
 }
 
 function populateTask(task) {
-
   const taskContainer = document.createElement('div');
   taskContainer.className = 'task';
   const title = document.createElement('span');
@@ -104,7 +106,8 @@ function initProjectListSection() {
     createProjectAndAddToList();
   })
   const projectListContainer = document.createElement('div');
-  projectListSection.className = 'project__list__section'
+  projectListSection.className = 'project__list__section';
+  projectListHeader.className = 'project__list__header';
   projectListHeaderTitle.innerText = 'Projects';
   newProjectButton.innerText = 'New +';
   projectListContainer.className = 'project__list';
@@ -146,9 +149,5 @@ const root = document.querySelector('#root');
 const projectListContainer = initProjectListSection();
 const todoList = initTodoListSection();
 let activeProject = projectList[0];
-
-
-
-
 
 export { populateProjectListUI, populateToDoListUI };

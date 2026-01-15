@@ -13,9 +13,10 @@ export default class Project {
     this.uuid = uuid;
   }
 
-  createTask(title = 'untitled', description = '', dueDate = '', priority = '') {
+  createTask(title, description, dueDate, priority) {
     const task = new Task(title, description, dueDate, priority);
     this.tasks.push(task);
+    saveProjectList();
     return task;
   }
 
