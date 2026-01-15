@@ -16,6 +16,10 @@ const projectListInit = () => {
   return projectList;
 }
 
+const deleteProject = () => {
+
+}
+
 
 let projectList = projectListInit()
 
