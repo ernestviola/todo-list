@@ -1,5 +1,6 @@
-import ToDo from '../components/Task';
-import Project from '../components/Project';
+import ToDo from '../components/objects/Task';
+import Project from '../components/objects/Project';
+import { createProject } from '../components/projectLogic';
 
 function testNoteCreationFlow() {
   const note = new Note('Untitled',

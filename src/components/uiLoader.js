@@ -1,14 +1,11 @@
 import { projectList, createProject } from './projectLogic';
-import Project from './Project';
-import Task from './Task';
+import Project from './objects/Project';
+import Task from './objects/Task';
 
 function populateProjectListUI(projectList) {
   projectListContainer.replaceChildren();
   for (let i = 0; i < projectList.length; i++) {
     const project = projectList[i];
-    if (!(project instanceof Project)) {
-      throw Error('Unable to populate project list becuase obj is not a project');
-    }
     const projectContainer = document.createElement('div');
     const projectName = document.createElement('span');
     projectName.innerText = project.name;
@@ -23,47 +20,37 @@ function populateProjectListUI(projectList) {
 
 function populateToDoListUI(project) {
   todoList.replaceChildren();
-  if (!(project instanceof Project)) {
-    throw Error('Unable to populate todo list because obj is not a project');
-  }
   for (let i = 0; i < project.tasks.length; i++) {
-    const toDoItem = project.tasks[i];
-    const toDoItemContainer = document.createElement('div');
-    const toDoItemName = document.createElement('span');
-
-    toDoItemName.innerText = toDoItem.title;
-    toDoItemContainer.append(toDoItemName);
-
-    toDoItemContainer.className = 'to__do__item';
-
-    toDoItemContainer.addEventListener('click', () => {
-      populateToDoItemUI(toDoItem);
-    })
-
-    todoList.append(toDoItemContainer);
+    todoList.append(
+      populateTask(project.tasks[i])
+    );
   }
 }
 
-function populateToDoItemUI(todo) {
-  todoItem.replaceChildren();
-  if (!(todo instanceof Task)) {
-    throw Error('Unable to populate todo item because obj is not a todo');
-  }
+function populateTask(task) {
 
+  const taskContainer = document.createElement('div');
+  taskContainer.className = 'task';
   const title = document.createElement('span');
+  title.className = 'task__title'
   const description = document.createElement('span');
+  description.className = 'task__description';
   const dueDate = document.createElement('span');
+  dueDate.className = 'task__due__date'
   const priority = document.createElement('priority');
+  priority.className = 'task__priority';
 
-  title.innerText = todo.title;
-  description.innerText = todo.description;
-  dueDate.innerText = todo.dueDate;
-  priority.innerText = todo.priority;
+  title.innerText = task.title;
+  description.innerText = task.description;
+  dueDate.innerText = task.dueDate;
+  priority.innerText = task.priority;
 
-  todoItem.appendChild(title);
-  todoItem.appendChild(description);
-  todoItem.appendChild(dueDate);
-  todoItem.appendChild(priority);
+  taskContainer.appendChild(title);
+  taskContainer.appendChild(description);
+  taskContainer.appendChild(dueDate);
+  taskContainer.appendChild(priority);
+
+  return taskContainer;
 
 }
 
@@ -128,9 +115,7 @@ function initTodoListSection() {
 const root = document.querySelector('#root');
 const projectListContainer = initProjectListSection();
 const todoList = initTodoListSection();
-const todoItem = document.createElement('div');
 let activeProject = projectList[0];
-root.appendChild(todoItem);
 
 
 

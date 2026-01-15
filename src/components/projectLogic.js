@@ -1,14 +1,38 @@
 // check to see if there is a project list in storage if not create a new one
 // function -> new Project and add to storage -> a project should be able to create new notes
 
-import Task from './Task';
-import Project from './Project';
+import Task from './objects/Task';
+import Project from './objects/Project';
+import { storage } from './storageLoader';
 
 const projectListInit = () => {
-  if (localStorage.projectList) {
-    return localStorage.projectList;
+  function rebuildProjectList(savedProjects) {
+    const builtProjectList = [];
+    for (let i = 0; i < savedProjects.length; i++) {
+      const currentSavedProject = savedProjects[i];
+      const newProject = new Project(currentSavedProject.name, currentSavedProject.uuid);
+      for (let j = 0; j < currentSavedProject.tasks.length; j++) {
+        const newTask = new Task(
+          currentSavedProject.tasks[j].title,
+          currentSavedProject.tasks[j].description,
+          currentSavedProject.tasks[j].dueDate,
+          currentSavedProject.tasks[j].priority,
+        )
+        newProject.tasks.push(newTask);
+      }
+      builtProjectList.push(newProject);
+    }
+    return builtProjectList;
   }
-  const projectList = []
+  let savedProjects = storage.load('projects');
+  let projectList;
+  if (!projectList) {
+    projectList = rebuildProjectList(savedProjects);
+    return projectList;
+  } else {
+    projectList = []
+  }
+
   const defaultProject = new Project('default');
   const openingToDo = new Task('Untitled');
   defaultProject.tasks.push(openingToDo);
@@ -20,18 +44,11 @@ const createProject = () => {
   const newProject = new Project('untitled');
   projectList.push(newProject);
 
+  storage.save('projects', projectList);
   return newProject;
-}
-
-const deleteProject = () => {
-
 }
 
 
 let projectList = projectListInit();
-
-
-
-
 
 export { projectList, createProject };
