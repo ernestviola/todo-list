@@ -1,5 +1,5 @@
-import Project from './project';
-import ToDo from './todo';
+import Project from './Project';
+import Task from './Task';
 
 function populateProjectListUI(projectList) {
 
@@ -44,7 +44,7 @@ function populateToDoListUI(project) {
 
 function populateToDoItemUI(todo) {
   todoItem.replaceChildren();
-  if (!(todo instanceof ToDo)) {
+  if (!(todo instanceof Task)) {
     throw Error('Unable to populate todo item because obj is not a todo');
   }
 

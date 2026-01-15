@@ -1,7 +1,7 @@
 // make a factory function or a class constructor
 // factory functions are smaller objects that don't get changed often.
 // title, description, dueDate, priority
-export default class ToDo {
+export default class Task {
   constructor(title, description, dueDate, priority) {
     this._title = title;
     this._description = description;
