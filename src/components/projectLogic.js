@@ -26,17 +26,18 @@ const projectListInit = () => {
   }
   let savedProjects = storage.load('projects');
   let projectList;
-  if (savedProjects) {
+  if (!savedProjects || (savedProjects && savedProjects.length == 0)) {
+    projectList = [];
+    const defaultProject = new Project('default');
+    const openingToDo = new Task('Untitled');
+    defaultProject.tasks.push(openingToDo);
+    projectList.push(defaultProject);
+  } else {
     projectList = rebuildProjectList(savedProjects);
     return projectList;
-  } else {
-    projectList = []
   }
 
-  const defaultProject = new Project('default');
-  const openingToDo = new Task('Untitled');
-  defaultProject.tasks.push(openingToDo);
-  projectList.push(defaultProject);
+
   return projectList;
 }
 
@@ -48,6 +49,14 @@ const createProject = () => {
   return newProject;
 }
 
+const deleteProject = (uuid) => {
+  const projectIndex = projectList.findIndex((project) => {
+    return project.uuid == uuid;
+  });
+  projectList.splice(projectIndex, 1);
+  saveProjectList();
+}
+
 function saveProjectList() {
   storage.save('projects', projectList);
 }
@@ -55,4 +64,4 @@ function saveProjectList() {
 
 let projectList = projectListInit();
 
-export { projectList, saveProjectList, createProject };
+export { projectList, saveProjectList, createProject, deleteProject };

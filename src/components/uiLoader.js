@@ -1,153 +1,206 @@
-import { projectList, createProject } from './projectLogic';
+import { projectList, createProject, deleteProject } from './projectLogic';
 
+let activeProject = projectList[0] || null;
 
-function populateProject(project) {
-  const projectContainer = document.createElement('div');
+const root = document.querySelector('#root');
+let projectListContainer;
+let taskList;
+
+function setActiveProject(project) {
+  activeProject = project;
+  render();
+}
+
+function render() {
+  renderProjectList();
+  renderTaskList();
+}
+
+function handleProjectClick(e) {
+  const projectEl = e.target.closest('.project');
+  if (!projectEl) return;
+
+  const index = [...projectListContainer.children].indexOf(projectEl);
+  activeProject = projectList[index];
+  renderTaskList();
+}
+
+function handleProjectDoubleClick(e) {
+  const projectEl = e.target.closest('.project');
+  if (!projectEl) return;
+
+  const projectName = projectEl.querySelector('.project__name');
+
+  e.preventDefault()
+  projectName.contentEditable = true;
+  projectName.focus();
+  const range = document.createRange();
+  range.selectNodeContents(projectName);
+  const selection = window.getSelection();
+  selection.removeAllRanges();
+  selection.addRange(range);
+}
+
+function handleProjectNameEdit(e, project) {
+  if (e.type === 'keydown' && e.key !== 'Enter') return;
+  e.preventDefault();
+
+  const projectName = e.target;
+
+  if (projectName.innerText.trim() === '') {
+    projectName.innerText = 'untitled';
+  }
+
+  project.updateProject(projectName.innerText);
+  projectName.contentEditable = false;
+}
+
+function handleProjectDelete(e, project) {
+  e.stopPropagation();
+
+  if (project.tasks.length > 0 &&
+    !window.confirm('This project still has tasks. Are you sure you want to delete?')) {
+    return;
+  }
+
+  deleteProject(project.uuid);
+
+  if (projectList.length === 0) {
+    setActiveProject(null);
+  } else if (activeProject === project) {
+    setActiveProject(projectList[0]);
+  } else {
+    render();
+  }
+}
+
+function createProjectElement(project) {
+  const isActive = project === activeProject;
+
+  const projectEl = document.createElement('div');
+  projectEl.className = `project ${isActive ? 'active' : ''}`;
+
   const projectName = document.createElement('span');
-  projectContainer.className = 'project'
   projectName.innerText = project.name;
-  projectContainer.appendChild(projectName);
-  projectContainer.addEventListener('click', () => {
-    activeProject = project;
-    populateToDoListUI(project);
-  })
+  projectName.className = 'project__name'
 
-  projectContainer.addEventListener('dblclick', (e) => {
-    e.preventDefault();
-    projectName.contentEditable = true;
-    projectName.focus();
-    projectName.selectN
-  })
+  const deleteBtn = document.createElement('button');
+  deleteBtn.innerText = 'close';
 
-  projectName.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') {
-      e.preventDefault()
-      if (projectName.innerText == '') {
-        projectName.innerText = 'untitled';
-      }
-      project.updateProject(projectName.innerText);
-      projectName.contentEditable = false;
-    }
-  })
+  projectEl.appendChild(projectName);
+  projectEl.appendChild(deleteBtn);
 
-  projectName.addEventListener('focusout', (e) => {
-    e.preventDefault()
-    if (projectName.innerText == '') {
-      projectName.innerText = 'untitled';
-    }
-    project.updateProject(projectName.innerText);
-    projectName.contentEditable = false;
-  })
+  deleteBtn.addEventListener('click', (e) => handleProjectDelete(e, project));
+  projectName.addEventListener('keydown', (e) => handleProjectNameEdit(e, project));
+  projectName.addEventListener('focusout', (e) => handleProjectNameEdit(e, project));
 
-  return projectContainer;
+  return projectEl;
 }
 
-function populateProjectListUI(projectList) {
+function renderProjectList() {
   projectListContainer.replaceChildren();
-  for (let i = 0; i < projectList.length; i++) {
-    projectListContainer.appendChild(
-      populateProject(projectList[i])
-    );
-  }
+  projectList.forEach(project => {
+    projectListContainer.appendChild(createProjectElement(project));
+  })
 }
 
-function populateToDoListUI(project) {
-  todoList.replaceChildren();
-  for (let i = 0; i < project.tasks.length; i++) {
-    todoList.append(
-      populateTask(project.tasks[i])
-    );
-  }
+function handleNewProject() {
+  const newProject = createProject();
+  setActiveProject(newProject);
 }
 
-function populateTask(task) {
-  const taskContainer = document.createElement('div');
-  taskContainer.className = 'task';
-  const title = document.createElement('span');
-  title.className = 'task__title'
-  const description = document.createElement('span');
-  description.className = 'task__description';
-  const dueDate = document.createElement('span');
-  dueDate.className = 'task__due__date'
-  const priority = document.createElement('priority');
-  priority.className = 'task__priority';
 
-  title.innerText = task.title;
-  description.innerText = task.description;
-  dueDate.innerText = task.dueDate;
-  priority.innerText = task.priority;
+function createTaskElement(task) {
+  const taskEl = document.createElement('div');
+  taskEl.className = 'task';
+  const taskTitle = document.createElement('span')
+  taskTitle.className = 'task__title';
+  taskTitle.innerText = task.title;
+  const taskDescription = document.createElement('span')
+  taskDescription.className = 'task__description';
+  taskDescription.innerText = task.description;
+  const taskDueDate = document.createElement('span')
+  taskDueDate.className = 'task__due__date';
+  taskDueDate.innerText = task.dueDate;
+  const taskPriority = document.createElement('span')
+  taskPriority.className = 'task__priority';
+  taskPriority.innerText = task.priority;
 
-  taskContainer.appendChild(title);
-  taskContainer.appendChild(description);
-  taskContainer.appendChild(dueDate);
-  taskContainer.appendChild(priority);
+  taskEl.appendChild(taskTitle);
+  taskEl.appendChild(taskDescription);
+  taskEl.appendChild(taskDueDate);
+  taskEl.appendChild(taskPriority);
 
-  return taskContainer;
-
+  return taskEl;
 }
 
-function createProjectAndAddToList() {
-  createProject();
-  populateProjectListUI(projectList);
+function renderTaskList() {
+  taskList.replaceChildren();
+
+  if (!activeProject) return;
+
+  activeProject.tasks.forEach(task => {
+    taskList.appendChild(createTaskElement(task));
+  })
 }
 
-function createTaskAndAddToProject() {
+function handleNewTask() {
+  if (!activeProject) return;
+
   activeProject.createTask();
-  populateToDoListUI(activeProject);
+  renderTaskList();
 }
 
 function initProjectListSection() {
-  const projectListSection = document.createElement('div');
-  const projectListHeader = document.createElement('div');
-  const projectListHeaderTitle = document.createElement('span');
-  const newProjectButton = document.createElement('button');
-  newProjectButton.addEventListener('click', (e) => {
-    e.preventDefault();
-    createProjectAndAddToList();
-  })
-  const projectListContainer = document.createElement('div');
-  projectListSection.className = 'project__list__section';
-  projectListHeader.className = 'project__list__header';
-  projectListHeaderTitle.innerText = 'Projects';
-  newProjectButton.innerText = 'New +';
-  projectListContainer.className = 'project__list';
+  const section = document.createElement('div');
+  const sectionHeader = document.createElement('div');
+  const sectionHeaderTitle = document.createElement('span');
+  const newProjectBtn = document.createElement('button');
+  const projectList = document.createElement('div');
+  section.className = 'project__list__section';
+  sectionHeader.className = 'project__list__header';
+  sectionHeaderTitle.innerText = 'Projects';
+  newProjectBtn.innerText = 'New +';
+  projectList.className = 'project__list';
 
 
-  projectListHeader.appendChild(projectListHeaderTitle);
-  projectListHeader.appendChild(newProjectButton);
-  projectListSection.appendChild(projectListHeader);
-  projectListSection.appendChild(projectListContainer);
-  root.appendChild(projectListSection);
-  return projectListContainer;
+  sectionHeader.appendChild(sectionHeaderTitle);
+  sectionHeader.appendChild(newProjectBtn);
+  section.appendChild(sectionHeader);
+  section.appendChild(projectList);
+  root.appendChild(section);
+
+  newProjectBtn.addEventListener('click', handleNewProject);
+  projectList.addEventListener('click', handleProjectClick);
+  projectList.addEventListener('dblclick', handleProjectDoubleClick);
+  return projectList;
 }
 
-function initTodoListSection() {
-  const todoListSection = document.createElement('div');
-  todoListSection.className = 'todo__list__section'
-  const todoListHeader = document.createElement('div');
-  const todoListTitle = document.createElement('span');
-  const newTodoItemButton = document.createElement('button');
-  newTodoItemButton.addEventListener('click', (e) => {
-    e.preventDefault();
-    createTaskAndAddToProject();
-  })
-  const todoList = document.createElement('div');
-  todoList.className = 'todo__list';
-  todoListTitle.innerText = 'Tasks'
-  newTodoItemButton.innerText = '+';
+function initTaskListSection() {
+  const section = document.createElement('div');
+  const sectionHeader = document.createElement('div');
+  const headerTitle = document.createElement('span');
+  const newTaskBtn = document.createElement('button');
+  const taskList = document.createElement('div');
 
-  todoListSection.appendChild(todoListHeader);
-  todoListHeader.appendChild(todoListTitle);
-  todoListHeader.appendChild(newTodoItemButton);
-  todoListSection.appendChild(todoList);
-  root.appendChild(todoListSection);
-  return todoList;
+  section.className = 'task__list__section'
+  sectionHeader.className = 'task__list__header'
+  taskList.className = 'task__list';
+  headerTitle.innerText = 'Tasks'
+  newTaskBtn.innerText = '+';
+
+  section.appendChild(sectionHeader);
+  section.appendChild(taskList);
+  sectionHeader.appendChild(headerTitle);
+  sectionHeader.appendChild(newTaskBtn);
+  root.appendChild(section);
+
+  newTaskBtn.addEventListener('click', handleNewTask);
+  return taskList;
 }
 
+projectListContainer = initProjectListSection();
+taskList = initTaskListSection();
 
-const root = document.querySelector('#root');
-const projectListContainer = initProjectListSection();
-const todoList = initTodoListSection();
-let activeProject = projectList[0];
 
-export { populateProjectListUI, populateToDoListUI };
+export { render, setActiveProject };

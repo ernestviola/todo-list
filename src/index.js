@@ -15,7 +15,7 @@ notes can be moved between projects
 
 import './styles.css'
 import { projectList } from './components/projectLogic';
-import { populateProjectListUI, populateToDoListUI } from './components/uiLoader';
+import { render, setActiveProject } from './components/uiLoader';
 
-populateProjectListUI(projectList);
-populateToDoListUI(projectList[0]);
+setActiveProject(projectList[0]);
+render();
