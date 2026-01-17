@@ -7,8 +7,32 @@
 </head>
 
 <body>
-  <div id='root'></div>
+  <div id='root'>
+    <div class='project__list__section'>
+      <div class='project__list__header'>
+        <span>Projects</span>
+        <button class='new__project'>+</button>
+      </div>
+      <div class='project__list'>
+
+      </div>
+    </div>
+    <div class='task__list__section'>
+      <div class='task__list__header'>
+        <span>Tasks</span>
+        <button class='new__task'>+</button>
+      </div>
+      <div class='task__list'></div>
+    </div>
+  </div>
   <footer>Made with ❤️ by <a href='https://github.com/ernestviola' target='_blank'>Ernest</a></footer>
+
+  <dialog id='form__modal' open>
+    <form action=''>
+      <label for='title'>Title</label>
+      <input type='text' id='title' name='title'>
+    </form>
+  </dialog>
 </body>
 
 </html>

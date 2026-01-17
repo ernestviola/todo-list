@@ -3,8 +3,8 @@ import { projectList, createProject, deleteProject } from './projectLogic';
 let activeProject = projectList[0] || null;
 
 const root = document.querySelector('#root');
-let projectListContainer;
-let taskList;
+let projectListEl;
+let taskListEl;
 
 function setActiveProject(project) {
   activeProject = project;
@@ -20,7 +20,7 @@ function handleProjectClick(e) {
   const projectEl = e.target.closest('.project');
   if (!projectEl) return;
 
-  const index = [...projectListContainer.children].indexOf(projectEl);
+  const index = [...projectListEl.children].indexOf(projectEl);
   activeProject = projectList[index];
   renderTaskList();
 }
@@ -98,9 +98,9 @@ function createProjectElement(project) {
 }
 
 function renderProjectList() {
-  projectListContainer.replaceChildren();
+  projectListEl.replaceChildren();
   projectList.forEach(project => {
-    projectListContainer.appendChild(createProjectElement(project));
+    projectListEl.appendChild(createProjectElement(project));
   })
 }
 
@@ -113,15 +113,19 @@ function handleNewProject() {
 function createTaskElement(task) {
   const taskEl = document.createElement('div');
   taskEl.className = 'task';
+
   const taskTitle = document.createElement('span')
   taskTitle.className = 'task__title';
   taskTitle.innerText = task.title;
+
   const taskDescription = document.createElement('span')
   taskDescription.className = 'task__description';
   taskDescription.innerText = task.description;
+
   const taskDueDate = document.createElement('span')
   taskDueDate.className = 'task__due__date';
   taskDueDate.innerText = task.dueDate;
+
   const taskPriority = document.createElement('span')
   taskPriority.className = 'task__priority';
   taskPriority.innerText = task.priority;
@@ -135,12 +139,12 @@ function createTaskElement(task) {
 }
 
 function renderTaskList() {
-  taskList.replaceChildren();
+  taskListEl.replaceChildren();
 
   if (!activeProject) return;
 
   activeProject.tasks.forEach(task => {
-    taskList.appendChild(createTaskElement(task));
+    taskListEl.appendChild(createTaskElement(task));
   })
 }
 
@@ -152,55 +156,23 @@ function handleNewTask() {
 }
 
 function initProjectListSection() {
-  const section = document.createElement('div');
-  const sectionHeader = document.createElement('div');
-  const sectionHeaderTitle = document.createElement('span');
-  const newProjectBtn = document.createElement('button');
-  const projectList = document.createElement('div');
-  section.className = 'project__list__section';
-  sectionHeader.className = 'project__list__header';
-  sectionHeaderTitle.innerText = 'Projects';
-  newProjectBtn.innerText = 'New +';
-  projectList.className = 'project__list';
-
-
-  sectionHeader.appendChild(sectionHeaderTitle);
-  sectionHeader.appendChild(newProjectBtn);
-  section.appendChild(sectionHeader);
-  section.appendChild(projectList);
-  root.appendChild(section);
+  const newProjectBtn = document.querySelector('.new__project');
+  const projectListEl = document.querySelector('.project__list')
 
   newProjectBtn.addEventListener('click', handleNewProject);
-  projectList.addEventListener('click', handleProjectClick);
-  projectList.addEventListener('dblclick', handleProjectDoubleClick);
-  return projectList;
+  projectListEl.addEventListener('click', handleProjectClick);
+  projectListEl.addEventListener('dblclick', handleProjectDoubleClick);
+  return projectListEl;
 }
 
 function initTaskListSection() {
-  const section = document.createElement('div');
-  const sectionHeader = document.createElement('div');
-  const headerTitle = document.createElement('span');
-  const newTaskBtn = document.createElement('button');
-  const taskList = document.createElement('div');
-
-  section.className = 'task__list__section'
-  sectionHeader.className = 'task__list__header'
-  taskList.className = 'task__list';
-  headerTitle.innerText = 'Tasks'
-  newTaskBtn.innerText = '+';
-
-  section.appendChild(sectionHeader);
-  section.appendChild(taskList);
-  sectionHeader.appendChild(headerTitle);
-  sectionHeader.appendChild(newTaskBtn);
-  root.appendChild(section);
-
+  const newTaskBtn = document.querySelector('.new__task');
+  const taskListEl = document.querySelector('.task__list');
   newTaskBtn.addEventListener('click', handleNewTask);
-  return taskList;
+  return taskListEl;
 }
 
-projectListContainer = initProjectListSection();
-taskList = initTaskListSection();
-
+projectListEl = initProjectListSection();
+taskListEl = initTaskListSection();
 
 export { render, setActiveProject };

@@ -8,22 +8,22 @@ import { storage } from './storageLoader';
 const projectListInit = () => {
   function rebuildProjectList(savedProjects) {
     const builtProjectList = [];
-    for (let i = 0; i < savedProjects.length; i++) {
-      const currentSavedProject = savedProjects[i];
-      const newProject = new Project(currentSavedProject.name, currentSavedProject.uuid);
-      for (let j = 0; j < currentSavedProject.tasks.length; j++) {
-        const newTask = new Task(
-          currentSavedProject.tasks[j].title,
-          currentSavedProject.tasks[j].description,
-          currentSavedProject.tasks[j].dueDate,
-          currentSavedProject.tasks[j].priority,
+    savedProjects.forEach((project) => {
+      const projectObj = new Project(project.name, project.uuid);
+      project.tasks.forEach((task) => {
+        const taskObj = new Task(
+          task.title,
+          task.description,
+          task.dueDate,
+          task.priority,
         )
-        newProject.tasks.push(newTask);
-      }
-      builtProjectList.push(newProject);
-    }
+        projectObj.tasks.push(taskObj);
+      })
+      builtProjectList.push(projectObj);
+    })
     return builtProjectList;
   }
+
   let savedProjects = storage.load('projects');
   let projectList;
   if (!savedProjects || (savedProjects && savedProjects.length == 0)) {
@@ -36,8 +36,6 @@ const projectListInit = () => {
     projectList = rebuildProjectList(savedProjects);
     return projectList;
   }
-
-
   return projectList;
 }
 
