@@ -29,8 +29,26 @@
 
   <dialog id='form__modal' open>
     <form action=''>
-      <label for='title'>Title</label>
-      <input type='text' id='title' name='title'>
+      <div class='form__row__title'>
+        <label for='title' hidden>Title</label>
+        <input type='text' id='title' name='title' placeholder='Title' aria-label='Title'>
+      </div>
+      <div class='form__row'>
+        <label for='description' hidden>Description</label>
+        <input type='text' id='description' name='description' placeholder='Description' aria-label='Description'>
+      </div>
+      <div class='form__row'>
+        <label for='dueDate' hidden>Due Date</label>
+        <input type='date' id='dueDate' name='dueDate' aria-label='Due Date'>
+      </div>
+      <div class='form__row'>
+        <label for='priority'>Priority</label>
+        <select name='priority' id='priority' aria-label='Priority'>
+          <option value='low'>Low</option>
+          <option value='low'>Medium</option>
+          <option value='low'>High</option>
+        </select>
+      </div>
     </form>
   </dialog>
 </body>
