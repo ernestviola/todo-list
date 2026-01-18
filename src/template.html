@@ -25,29 +25,38 @@
       <div class='task__list'></div>
     </div>
   </div>
-  <footer>Made with ❤️ by <a href='https://github.com/ernestviola' target='_blank'>Ernest</a></footer>
+  <footer>
+    Made with ❤️ by <a href='https://github.com/ernestviola' target='_blank'>Ernest</a>
+  </footer>
 
-  <dialog id='form__modal' open>
-    <form action=''>
-      <div class='form__row__title'>
+  <dialog id='form__modal'>
+    <form action='' class='form' id='form'>
+      <div class='form__row__title form__row'>
         <label for='title' hidden>Title</label>
         <input type='text' id='title' name='title' placeholder='Title' aria-label='Title'>
       </div>
       <div class='form__row'>
         <label for='description' hidden>Description</label>
-        <input type='text' id='description' name='description' placeholder='Description' aria-label='Description'>
+        <textarea rows='5' type='text' id='description' name='description' placeholder='Description'
+          aria-label='Description'></textarea>
       </div>
       <div class='form__row'>
-        <label for='dueDate' hidden>Due Date</label>
-        <input type='date' id='dueDate' name='dueDate' aria-label='Due Date'>
+        <div class='form__item'>
+          <label for='dueDate'>Due Date:</label>
+          <input type='date' id='dueDate' name='dueDate' aria-label='Due Date'>
+        </div>
+        <div class='form__item'>
+          <label for='priority'>Priority:</label>
+          <select name='priority' id='priority' aria-label='Priority'>
+            <option value='low'>Low</option>
+            <option value='low'>Medium</option>
+            <option value='low'>High</option>
+          </select>
+        </div>
       </div>
-      <div class='form__row'>
-        <label for='priority'>Priority</label>
-        <select name='priority' id='priority' aria-label='Priority'>
-          <option value='low'>Low</option>
-          <option value='low'>Medium</option>
-          <option value='low'>High</option>
-        </select>
+      <div class='form__buttons'>
+        <button class='form__save' id='form__save' type='submit'>Save</button>
+        <button class='form__cancel' id='form__cancel' type='button'>Cancel</button>
       </div>
     </form>
   </dialog>

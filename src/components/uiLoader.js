@@ -148,6 +148,27 @@ function renderTaskList() {
   })
 }
 
+function clearTaskForm() {
+  const form = document.getElementById('form');
+  form.reset();
+}
+
+function openNewTaskModal() {
+  const modal = document.querySelector('#form__modal');
+  modal.showModal();
+}
+
+function closeTaskModal(e) {
+  e.preventDefault();
+  const modal = document.querySelector('#form__modal');
+  clearTaskForm();
+  modal.close();
+}
+
+function handleTaskSave() {
+  // 2 situations there's an edit and save and there's a new task.
+}
+
 function handleNewTask() {
   if (!activeProject) return;
 
@@ -168,11 +189,28 @@ function initProjectListSection() {
 function initTaskListSection() {
   const newTaskBtn = document.querySelector('.new__task');
   const taskListEl = document.querySelector('.task__list');
-  newTaskBtn.addEventListener('click', handleNewTask);
+  newTaskBtn.addEventListener('click', openNewTaskModal);
   return taskListEl;
+}
+
+function initNewTaskModal() {
+  const dialog = document.getElementById('form__modal');
+  const taskSaveBtn = document.querySelector('.form__save');
+  const taskCancelBtn = document.querySelector('.form__cancel');
+
+
+  dialog.addEventListener('click', (e) => {
+    if (e.target === dialog) {
+      dialog.close();
+      clearTaskForm();
+    }
+  });
+
+  taskCancelBtn.addEventListener('click', (e) => closeTaskModal(e));
 }
 
 projectListEl = initProjectListSection();
 taskListEl = initTaskListSection();
+initNewTaskModal();
 
 export { render, setActiveProject };
