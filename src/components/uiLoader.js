@@ -130,9 +130,14 @@ function createTaskElement(task) {
   taskPriority.className = 'task__priority';
   taskPriority.innerText = task.priority;
 
+  const taskInfoContainer = document.createElement('div');
+  taskInfoContainer.className = 'task__info'
+
   const editBtn = document.createElement('button');
   const deleteBtn = document.createElement('button');
   const completeBtn = document.createElement('button');
+
+
 
   editBtn.className = 'task__edit';
   deleteBtn.className = 'task__delete';
@@ -143,12 +148,14 @@ function createTaskElement(task) {
   completeBtn.innerText = 'complete';
 
   taskEl.appendChild(completeBtn);
-  taskEl.appendChild(taskTitle);
-  taskEl.appendChild(taskDescription);
-  taskEl.appendChild(taskDueDate);
-  taskEl.appendChild(taskPriority);
+  taskEl.appendChild(taskInfoContainer)
+  taskInfoContainer.appendChild(taskTitle);
+  taskInfoContainer.appendChild(taskDescription);
+  taskInfoContainer.appendChild(taskDueDate);
+  taskInfoContainer.appendChild(taskPriority);
   taskEl.appendChild(editBtn);
   taskEl.appendChild(deleteBtn);
+
 
   return taskEl;
 }

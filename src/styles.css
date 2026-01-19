@@ -179,3 +179,51 @@ footer {
   background-color: #1d65b7;
   color: white;
 }
+
+.task {
+  display: flex;
+  gap: 4px;
+  border-bottom: 1px solid gray;
+}
+
+.task:last-child {
+  border-bottom: none;
+}
+
+
+.task__info {
+  flex-grow: 1;
+  display: grid;
+  grid-template-areas:
+    'title title title title title title title title title dueDate'
+    'title title title title title title title title title priority'
+    'description description description description description description description description description description'
+  ;
+}
+
+.task__title {
+  font-size: 1.5em;
+  height: 2em;
+  grid-area: title;
+  align-content: end;
+}
+
+.task__description {
+  height: 1.5em;
+  grid-area: description;
+}
+
+.task__due__date,
+.task__priority {
+  font-size: .8em;
+  justify-self: end;
+  align-self: start;
+}
+
+.task__due__date {
+  grid-area: dueDate;
+}
+
+.task__priority {
+  grid-area: priority;
+}
