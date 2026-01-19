@@ -87,6 +87,7 @@ function createProjectElement(project) {
   projectName.className = 'project__name'
 
   const deleteBtn = document.createElement('button');
+  deleteBtn.classList.add('material-symbols-outlined', 'button__background__transparent')
   deleteBtn.innerText = 'close';
 
   projectEl.appendChild(projectName);
@@ -126,7 +127,7 @@ function createTaskElement(task) {
 
   const taskDueDate = document.createElement('span')
   taskDueDate.className = 'task__due__date';
-  taskDueDate.innerText = task.dueDate;
+  taskDueDate.innerText = new Date(task.dueDate).toLocaleDateString();
 
   const taskPriority = document.createElement('span')
   taskPriority.className = 'task__priority';
@@ -183,7 +184,7 @@ function openTaskModal() {
   if (activeTask) {
     document.getElementById('title').value = activeTask.title;
     document.getElementById('description').value = activeTask.description;
-    document.getElementById('dueDate').value = activeTask.dueDate;
+    document.getElementById('dueDate').value = new Date(activeTask.dueDate).toISOString().substring(0, 10);
     document.getElementById('priority').value = activeTask.priority;
   }
 

@@ -57,8 +57,10 @@ a:hover {
 
 .project__list__header {
   height: 40px;
+  padding: 0px 8px;
   display: flex;
-  justify-content: space-between;
+  gap: 8px;
+  border-bottom: 1px solid gray;
 }
 
 .project__list__header>span {
@@ -67,10 +69,16 @@ a:hover {
 
 .task__list__header {
   height: 40px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-left: 8px;
+  border-bottom: 1px solid gray;
 }
 
 .project__list,
 .task__list {
+  padding: 8px 8px;
   display: flex;
   flex-direction: column;
   gap: 4px;
@@ -79,9 +87,12 @@ a:hover {
 }
 
 .project {
-  height: 1.5em;
+  flex-shrink: 0;
+  height: 1.8em;
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
 }
 
 footer {
@@ -179,6 +190,7 @@ footer {
 }
 
 .task {
+  flex-shrink: 0;
   display: flex;
   gap: 4px;
   border-bottom: 1px solid gray;
@@ -206,13 +218,14 @@ footer {
 
 .task__title {
   font-size: 1.5em;
-  height: 2em;
+  height: 1.6em;
   grid-area: title;
   align-content: end;
 }
 
 .task__description {
-  height: 1.5em;
+  font-size: .8em;
+  color: rgb(186, 184, 184);
   grid-area: description;
 }
 
@@ -229,4 +242,9 @@ footer {
 
 .task__priority {
   grid-area: priority;
+}
+
+.button__background__transparent {
+  background: transparent;
+  border: none;
 }
