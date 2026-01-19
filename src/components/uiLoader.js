@@ -165,14 +165,22 @@ function closeTaskModal(e) {
   modal.close();
 }
 
-function handleTaskSave() {
-  // 2 situations there's an edit and save and there's a new task.
-}
+function handleTaskSave(e, task) {
+  if (!task) {
+    // create a new task add it to the active project and set to task
+    task = activeProject.createTask();
+  }
 
-function handleNewTask() {
-  if (!activeProject) return;
+  const form = document.getElementById('form');
+  const formData = new FormData(form);
 
-  activeProject.createTask();
+  task.updateTask(
+    formData.get('title'),
+    formData.get('description'),
+    formData.get('dueDate'),
+    formData.get('priority')
+  );
+  closeTaskModal(e);
   renderTaskList();
 }
 
@@ -195,7 +203,7 @@ function initTaskListSection() {
 
 function initNewTaskModal() {
   const dialog = document.getElementById('form__modal');
-  const taskSaveBtn = document.querySelector('.form__save');
+  const form = document.getElementById('form')
   const taskCancelBtn = document.querySelector('.form__cancel');
 
 
@@ -205,6 +213,10 @@ function initNewTaskModal() {
       clearTaskForm();
     }
   });
+
+  form.addEventListener('submit', (e) => {
+    handleTaskSave(e);
+  })
 
   taskCancelBtn.addEventListener('click', (e) => closeTaskModal(e));
 }
