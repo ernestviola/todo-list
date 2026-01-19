@@ -1,6 +1,8 @@
 import { projectList, createProject, deleteProject } from './projectLogic';
+import 'material-symbols';
 
 let activeProject = projectList[0] || null;
+let activeTask = null;
 
 const root = document.querySelector('#root');
 let projectListEl;
@@ -137,15 +139,16 @@ function createTaskElement(task) {
   const deleteBtn = document.createElement('button');
   const completeBtn = document.createElement('button');
 
-
-
-  editBtn.className = 'task__edit';
-  deleteBtn.className = 'task__delete';
-  completeBtn.className = 'task__complete';
+  editBtn.className = 'task__edit material-symbols-outlined';
+  deleteBtn.className = 'task__delete material-symbols-outlined';
+  completeBtn.className = 'task__complete material-symbols-outlined';
 
   editBtn.innerText = 'edit'
   deleteBtn.innerText = 'delete';
-  completeBtn.innerText = 'complete';
+  completeBtn.innerText = 'check_box_outline_blank';
+
+  completeBtn.addEventListener('click', (e) => handleTaskComplete(e));
+  editBtn.addEventListener('click', (e) => handleTaskEdit(e, task));
 
   taskEl.appendChild(completeBtn);
   taskEl.appendChild(taskInfoContainer)
@@ -155,7 +158,6 @@ function createTaskElement(task) {
   taskInfoContainer.appendChild(taskPriority);
   taskEl.appendChild(editBtn);
   taskEl.appendChild(deleteBtn);
-
 
   return taskEl;
 }
@@ -175,7 +177,15 @@ function clearTaskForm() {
   form.reset();
 }
 
-function openNewTaskModal() {
+function openTaskModal() {
+  // if there is an activeTask then load that into the form
+  if (activeTask) {
+    document.getElementById('title').value = activeTask.title;
+    document.getElementById('description').value = activeTask.description;
+    document.getElementById('dueDate').value = activeTask.dueDate;
+    document.getElementById('priority').value = activeTask.priority;
+  }
+
   const modal = document.querySelector('#form__modal');
   modal.showModal();
 }
@@ -184,19 +194,32 @@ function closeTaskModal(e) {
   e.preventDefault();
   const modal = document.querySelector('#form__modal');
   clearTaskForm();
+  activeTask = null;
   modal.close();
 }
 
-function handleTaskSave(e, task) {
-  if (!task) {
+function handleTaskEdit(e, task) {
+  e.preventDefault();
+  activeTask = task;
+  openTaskModal();
+}
+
+function handleTaskComplete(e) {
+  e.preventDefault();
+  e.target.innerText = e.target.innerText !== 'check_box' ?
+    'check_box' : 'check_box_outline_blank';
+}
+
+function handleTaskSave(e) {
+  if (!activeTask) {
     // create a new task add it to the active project and set to task
-    task = activeProject.createTask();
+    activeTask = activeProject.createTask();
   }
 
   const form = document.getElementById('form');
   const formData = new FormData(form);
 
-  task.updateTask(
+  activeTask.updateTask(
     formData.get('title'),
     formData.get('description'),
     formData.get('dueDate'),
@@ -204,6 +227,7 @@ function handleTaskSave(e, task) {
   );
   closeTaskModal(e);
   renderTaskList();
+  activeTask = null;
 }
 
 function initProjectListSection() {
@@ -219,7 +243,7 @@ function initProjectListSection() {
 function initTaskListSection() {
   const newTaskBtn = document.querySelector('.new__task');
   const taskListEl = document.querySelector('.task__list');
-  newTaskBtn.addEventListener('click', openNewTaskModal);
+  newTaskBtn.addEventListener('click', openTaskModal);
   return taskListEl;
 }
 

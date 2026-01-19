@@ -10,13 +10,12 @@
 }
 
 body {
-  background: radial-gradient(rgb(248, 236, 223), rgb(238, 221, 200));
+  /* background: radial-gradient(rgb(248, 236, 223), rgb(238, 221, 200)); */
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 1em;
-  color: white;
 }
 
 button:hover {
@@ -37,7 +36,6 @@ a:hover {
   gap: 2px;
   width: 60vw;
   border-radius: 4px;
-  background: linear-gradient(rgb(39, 36, 36), rgb(31, 28, 28));
   padding: 2px;
 
   box-shadow: 0 0 5px 5px rgb(8, 8, 8);
@@ -184,6 +182,11 @@ footer {
   display: flex;
   gap: 4px;
   border-bottom: 1px solid gray;
+}
+
+.task button {
+  background: transparent;
+  border: none;
 }
 
 .task:last-child {
