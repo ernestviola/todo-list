@@ -29,8 +29,6 @@ const projectListInit = () => {
   if (!savedProjects || (savedProjects && savedProjects.length == 0)) {
     projectList = [];
     const defaultProject = new Project('default');
-    const openingToDo = new Task('Untitled');
-    defaultProject.tasks.push(openingToDo);
     projectList.push(defaultProject);
   } else {
     projectList = rebuildProjectList(savedProjects);

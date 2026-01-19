@@ -20,6 +20,14 @@ export default class Project {
     return task;
   }
 
+  deleteTask(task) {
+    const taskIndex = this.tasks.indexOf(task);
+    if (taskIndex >= 0) {
+      this.tasks.splice(taskIndex, 1);
+    }
+    saveProjectList();
+  }
+
   updateProject(name) {
     this.name = name;
     saveProjectList();

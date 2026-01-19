@@ -149,6 +149,7 @@ function createTaskElement(task) {
 
   completeBtn.addEventListener('click', (e) => handleTaskComplete(e));
   editBtn.addEventListener('click', (e) => handleTaskEdit(e, task));
+  deleteBtn.addEventListener('click', (e) => handleTaskDelete(e, task));
 
   taskEl.appendChild(completeBtn);
   taskEl.appendChild(taskInfoContainer)
@@ -196,6 +197,12 @@ function closeTaskModal(e) {
   clearTaskForm();
   activeTask = null;
   modal.close();
+}
+
+function handleTaskDelete(e, task) {
+  e.preventDefault();
+  activeProject.deleteTask(task);
+  renderTaskList();
 }
 
 function handleTaskEdit(e, task) {
