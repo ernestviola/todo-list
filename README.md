@@ -11,6 +11,8 @@ Keep in mind the [SOLID principles](https://www.geeksforgeeks.org/system-design/
 
 ## Attributions
 
+Icons from Material Symbols
+
 ### Features
 1. Create a note that is stored in a default folder
 - CRUD any note
@@ -19,5 +21,3 @@ Keep in mind the [SOLID principles](https://www.geeksforgeeks.org/system-design/
 - CRUD any project
 3. Able to move notes between folders
 4. Add local storage with the Web Storage API
-
-### Pseudocode
