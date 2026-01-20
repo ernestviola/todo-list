@@ -10,7 +10,7 @@ export default class Task {
   dueDate;
   priority;
 
-  constructor(title = '', description = '', dueDate, priority) {
+  constructor(title = '', description = '', dueDate, priority, complete) {
     if (!dueDate) {
       dueDate = new Date().toUTCString();
     }
@@ -18,8 +18,8 @@ export default class Task {
     this.title = title;
     this.description = description;
     this.dueDate = dueDate;
-    this.priority = priority; // I'd rather project maintain priority using some sort of list
-    this.complete = null;
+    this.priority = priority;
+    this.complete = complete;
   }
 
   updateTask(title, description, dueDate, priority, complete) {
@@ -34,7 +34,7 @@ export default class Task {
     this.description = description ? description : this.description;
     this.dueDate = dueDate;
     this.priority = priority ? priority : this.priority;
-    this.complete = complete === null ? complete : this.complete;
+    this.complete = complete;
     saveProjectList();
   }
 }

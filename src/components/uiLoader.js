@@ -146,9 +146,9 @@ function createTaskElement(task) {
 
   editBtn.innerText = 'edit'
   deleteBtn.innerText = 'delete';
-  completeBtn.innerText = 'check_box_outline_blank';
+  completeBtn.innerText = task.complete ? "check_box" : 'check_box_outline_blank';
 
-  completeBtn.addEventListener('click', (e) => handleTaskComplete(e));
+  completeBtn.addEventListener('click', (e) => handleTaskComplete(e, task));
   editBtn.addEventListener('click', (e) => handleTaskEdit(e, task));
   deleteBtn.addEventListener('click', (e) => handleTaskDelete(e, task));
 
@@ -212,10 +212,13 @@ function handleTaskEdit(e, task) {
   openTaskModal();
 }
 
-function handleTaskComplete(e) {
+function handleTaskComplete(e, task) {
   e.preventDefault();
-  e.target.innerText = e.target.innerText !== 'check_box' ?
+  const toggleComplete = e.target.innerText !== 'check_box' ?
     'check_box' : 'check_box_outline_blank';
+  task.updateTask(null, null, null, null, toggleComplete === 'check_box');
+  console.log(task)
+  e.target.innerText = toggleComplete;
 }
 
 function handleTaskSave(e) {

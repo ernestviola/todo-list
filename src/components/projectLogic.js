@@ -16,6 +16,7 @@ const projectListInit = () => {
           task.description,
           task.dueDate,
           task.priority,
+          task.complete
         )
         projectObj.tasks.push(taskObj);
       })
